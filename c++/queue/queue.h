@@ -49,6 +49,7 @@ namespace algo {
             uint32_t _capacity;
             T * _elements;
             static const int _defaultCapacity = 50;
+
             void resize(uint32_t capacity){
                 if (capacity <= _size){
                     return;
@@ -64,6 +65,66 @@ namespace algo {
                 _elements = temp;
             }
     };
-}
+    template<typename T>
+    class QueueList {
+        public:
+            QueueList():_size(0), _head(nullptr), _tail(nullptr){};
+            ~QueueList(){
+                while(_head){
+                    Node* toDeleteNode = _head;
+                    _head = _head->next;
+                    std::cout << "to delete item" << toDeleteNode->item << std::endl;
+                    delete toDeleteNode;
+                }
+            }
+            void Enqueue(T const& item){
+                Node* newNode = new Node();
+                newNode->item = item;
+                newNode->next = nullptr;
+                if (IsEmpty()) {
+                    _tail = newNode;
+                    _head = _tail;
+                }else{
+                    _tail->next = newNode;
+                    _tail = newNode;
+                }
+                _size++;
+            }
+            T Dequeue(){
+                if (IsEmpty()){
+                    throw "Queue is empty.";
+                }
+                Node* temp = _head;
+                T item = _head->item;
+                _head = _head->next;
+                _size--;
+                delete temp;
+                return item;
+            }
+            bool IsEmpty(){
+                return _size == 0;
+            }
+            uint32_t Size(){
+                return _size;
+            }
+            void Show(){
+                std::cout << "size:" << Size()<< std::endl;
+                Node *cur = _head; 
+                while(cur)
+                {
+                    std::cout<< "item:" << cur->item << std::endl;
+                    cur = cur->next;
 
+                }
+            }
+        private:
+            struct Node {
+                T    item;
+                Node *next;
+            };
+            uint32_t  _size;
+            Node*     _head;
+            Node*     _tail;
+        };
+}
 #endif
