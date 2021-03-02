@@ -98,6 +98,9 @@ namespace algo {
                 T item = _head->item;
                 _head = _head->next;
                 _size--;
+                if (_head == nullptr){
+                    _tail = nullptr;
+                }
                 delete temp;
                 return item;
             }
