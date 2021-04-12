@@ -14,10 +14,12 @@ class MyList{
         MyList& operator=(MyList&&);
         ~MyList();
 
+        T delete_tail();
         void add_tail(const T&);
         void add_front(const T&);
         uint32_t Size(){return _size;}
         bool IsEmpty(){return Size()==0;}
+        
         void Display(){
             auto temp = _head;
             while(temp){
@@ -59,7 +61,7 @@ template<typename T>
 MyList<T>::MyList(MyList && rhs){
     move(std::move(rhs));
     rhs._head =  rhs._tail = nullptr;
-    _size = 0;
+    rhs._size = 0;
 
 }
 
@@ -69,7 +71,7 @@ MyList<T>& MyList<T>::operator=(MyList && rhs){
         free();
         move(std::move(rhs));
         rhs._head =  rhs._tail = nullptr;
-        _size = 0;
+        rhs._size = 0;
     }
     return *this;
 }
@@ -105,6 +107,31 @@ void MyList<T>::add_front(const T& item){
         _head = newNode;
     }
     _size++;
+}
+
+template<typename T>
+T MyList<T>::delete_tail(){
+    assert(!IsEmpty());
+    T deleteItem;
+    Node* toDeleteNode = _head;
+    if(toDeleteNode == _tail){
+        deleteItem = _tail->value;
+        delete _tail;
+        _head = _tail = nullptr; 
+       
+    }
+    else{
+        while(toDeleteNode->next != _tail){
+            toDeleteNode = toDeleteNode->next;
+        }
+        deleteItem = _tail->value;
+        delete _tail;
+        toDeleteNode->next = nullptr;
+        _tail = toDeleteNode;
+        
+    }
+    _size--;
+    return deleteItem;
 }
 
 
