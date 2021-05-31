@@ -27,6 +27,9 @@ int main(){
     l4.Display();
     l5 = l;
     l5.Display();
+    int a = l5.delete_tail();
+    std::cout << a << std::endl;
+    l5.Display();
 
 
 }
